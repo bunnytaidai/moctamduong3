@@ -187,10 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             showCover: false,      // Sử dụng trang đôi liên tục.
             usePortrait: false,    // Ép hiển thị trang đôi kể cả trên mobile ngang.
-            useMouseEvents: false, // Tắt hoàn toàn việc kéo lật trang bằng chuột/tay để giữ nguyên kích thước phẳng phiu
             
             flippingTime: 300,     // Hoạt ảnh lật trang siêu tốc (300ms) cực kỳ nhạy và nhanh
-            swipeDistance: 5000,   // Đặt khoảng cách vuốt cực lớn để tắt kéo vuốt lật uốn cong gây to/lệch trang trên mobile
+            swipeDistance: 15,     // Giảm khoảng cách vuốt tối thiểu để lật trang nhanh hơn trên mobile
             maxShadowOpacity: 0.85, // Tăng mạnh độ đậm bóng đổ StPageFlip vẽ để tối ưu thị giác 3D (v3.4)
             showPageCorners: false, // TẮT hiệu ứng nhô mép góc trang khi rê chuột qua (v3.4)
             disableKeyPress: true

@@ -8,11 +8,11 @@ Chào anh Thỏ, tài liệu này chứa toàn bộ thông tin quan trọng về
 
 | STT | Tên Tài Nguyên | Phiên Bản | Relative Path | Tác Dụng | Lệnh tải bù / Cách phục hồi |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | `index.html` | v4.0-debug-02 | `./index.html` | File cấu trúc chính của website lật sách. | Tải lại từ repo gốc. |
-| 2 | `index.css` | v4.0-debug-02 | `./index.css` | Giao diện, phong cách, hiệu ứng bóng mượt và chống zoom. | Tải lại từ repo gốc. |
-| 3 | `main.js` | v4.0-debug-02 | `./main.js` | Xử lý logic lật sách StPageFlip, co giãn màn hình và khóa cử chỉ zoom. | Tải lại từ repo gốc. |
-| 4 | `data-manager.js` | v4.0-debug-02 | `./data-manager.js` | Quản lý đồng bộ Firebase/GitHub & so sánh cache/cookie. | Tải lại từ repo gốc. |
-| 5 | `server.js` | v4.0-debug-02 | `./server.js` | Backend quét ảnh, watch thư mục, cập nhật data tự động. | Chạy lại lệnh tạo file. |
+| 1 | `index.html` | v4.0-debug-03 | `./index.html` | File cấu trúc chính của website lật sách. | Tải lại từ repo gốc. |
+| 2 | `index.css` | v4.0-debug-03 | `./index.css` | Giao diện, phong cách, hiệu ứng bóng mượt và chống zoom. | Tải lại từ repo gốc. |
+| 3 | `main.js` | v4.0-debug-03 | `./main.js` | Xử lý logic lật sách StPageFlip, co giãn màn hình và khóa cử chỉ zoom. | Tải lại từ repo gốc. |
+| 4 | `data-manager.js` | v4.0-debug-03 | `./data-manager.js` | Quản lý đồng bộ Firebase/GitHub & so sánh cache/cookie. | Tải lại từ repo gốc. |
+| 5 | `server.js` | v4.0-debug-03 | `./server.js` | Backend quét ảnh, watch thư mục, cập nhật data tự động. | Chạy lại lệnh tạo file. |
 | 6 | `start_project.bat` | v1.0 | `./start_project.bat` | File shortcut khởi chạy dự án tự động. | Chạy lại lệnh tạo file. |
 | 7 | `stop_project.bat` | v1.0 | `./stop_project.bat` | File shortcut dừng dự án an toàn. | Chạy lại lệnh tạo file. |
 | 8 | `menu_data.json` | Tự động | `./menu_data.json` | Lưu trữ cấu trúc các trang thực đơn động. | Tự động sinh ra khi chạy `server.js`. |
