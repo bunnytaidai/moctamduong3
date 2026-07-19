@@ -612,6 +612,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // 7. KHÓA HOÀN TOÀN CÁC THAO TÁC CUỘN & THU PHÓNG (PINCH TO ZOOM) BẰNG JS
     // ==========================================================================
+    // Ngăn chặn hoàn toàn hành vi cuộn và thu phóng mặc định của trình duyệt trên mobile
+    document.addEventListener('touchmove', (event) => {
+        // Chỉ cho phép cuộn khi người dùng đang tương tác với modal hoặc phần tử HTML tùy biến
+        const isScrollable = event.target.closest('.modal-content') || event.target.closest('.custom-html-element');
+        if (!isScrollable) {
+            event.preventDefault();
+        }
+    }, { passive: false });
+
     // Ngăn chặn pinch-to-zoom (thu phóng hai ngón tay) trên toàn giao diện
     document.addEventListener('touchstart', (event) => {
         if (event.touches.length > 1) {
@@ -629,9 +638,18 @@ document.addEventListener('DOMContentLoaded', () => {
         lastTouchEnd = now;
     }, { passive: false });
 
+    // Ngăn chặn dblclick (nhấp đúp chuột/tay) gây phóng to màn hình
+    document.addEventListener('dblclick', (event) => {
+        event.preventDefault();
+    }, { passive: false });
+
     // Ngăn chặn cử chỉ zoom đặc thù trên iOS Safari
     document.addEventListener('gesturestart', (event) => {
         event.preventDefault();
-    });
+    }, { passive: false });
+
+    document.addEventListener('gesturechange', (event) => {
+        event.preventDefault();
+    }, { passive: false });
 
 });

@@ -979,3 +979,14 @@ html {
 
 /* Import thêm các font chữ thư pháp, cổ trang Việt hóa từ Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Charmonman:wght@400;700&family=Dancing+Script:wght@400;700&family=Great+Vibes&display=swap');
+
+/* Vô hiệu hóa hoàn toàn cử chỉ zoom, cuộn và chạm giữ trên thiết bị di động cho cuốn sách */
+.book-viewport,
+.flipbook,
+.page,
+.page-content {
+    touch-action: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+}

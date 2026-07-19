@@ -216,34 +216,61 @@ async function setupDefaultData() {
     }
 }
 
-// Hàm tải dữ liệu thực đơn tĩnh từ file menu_data.json trên host tĩnh (v3.3)
+// Hàm tải dữ liệu thực đơn tĩnh từ file menu_data.json trên host tĩnh (v4.0)
 async function loadStaticMenuData() {
     try {
         // Thêm query timestamp chống trình duyệt cache kết quả cũ
         const res = await fetch(`menu_data.json?t=${Date.now()}`);
         if (res.ok) {
             const parsedData = await res.json();
-            let pagesList = Array.isArray(parsedData) ? parsedData : (parsedData.pages || []);
-            let globalBg = Array.isArray(parsedData) ? '' : (parsedData.global_bg || '');
-            localStorage.setItem('muxintang_global_bg', globalBg);
-            
+            const serverVersion = parsedData.version || '1.0.0';
+            const clientVersion = localStorage.getItem('muxintang_menu_version');
+
+            let pagesList = parsedData.pages || [];
+            let globalBg = parsedData.global_bg || 'images/spa_background.png';
+            let siteTitle = parsedData.site_title || 'MỘC TÂM ĐƯỜNG massage';
             let globalLayout = parsedData.global_layout || {};
-            localStorage.setItem('muxintang_global_layout', JSON.stringify(globalLayout));
-            
+
             pagesList.sort((a, b) => a.order - b.order);
-            
-            // Cập nhật bộ nhớ đệm Local để hỗ trợ chạy offline
-            localStorage.setItem('muxintang_menu_pages_cache', JSON.stringify(pagesList));
-            localStorage.setItem('muxintang_menu_pages', JSON.stringify({
-                site_title: siteTitle,
-                global_bg: globalBg,
-                pages: pagesList,
-                global_layout: globalLayout
-            }));
-            
-            triggerCallbacks(pagesList);
-            console.log("Đồng bộ thành công dữ liệu thực đơn từ menu_data.json trên máy chủ.");
-            return true;
+
+            // Kiểm tra xem phiên bản có thay đổi không
+            if (serverVersion !== clientVersion) {
+                console.log(`[CACHE] Phát hiện phiên bản mới: Server (${serverVersion}) vs Client (${clientVersion}). Đang cập nhật cache...`);
+                
+                // Cập nhật cookie để tương thích đồng bộ các thiết bị
+                document.cookie = `menu_version=${serverVersion}; max-age=31536000; path=/`;
+
+                // Cập nhật localStorage
+                localStorage.setItem('muxintang_menu_version', serverVersion);
+                localStorage.setItem('muxintang_global_bg', globalBg);
+                localStorage.setItem('muxintang_site_title', siteTitle);
+                localStorage.setItem('muxintang_global_layout', JSON.stringify(globalLayout));
+                localStorage.setItem('muxintang_menu_pages_cache', JSON.stringify(pagesList));
+                localStorage.setItem('muxintang_menu_pages', JSON.stringify({
+                    site_title: siteTitle,
+                    global_bg: globalBg,
+                    pages: pagesList,
+                    global_layout: globalLayout,
+                    version: serverVersion
+                }));
+
+                triggerCallbacks(pagesList);
+
+                // Reload lại trang sau 300ms để làm mới hoàn toàn tài nguyên ảnh/css/js trên thiết bị
+                console.log("[CACHE] Đang tải lại giao diện mới nhất...");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 300);
+                return true;
+            } else {
+                console.log(`[CACHE] Phiên bản trùng khớp (${serverVersion}). Sử dụng cache từ LocalStorage để tối ưu tốc độ.`);
+                const cachedPagesStr = localStorage.getItem('muxintang_menu_pages_cache');
+                if (cachedPagesStr) {
+                    pagesList = JSON.parse(cachedPagesStr);
+                }
+                triggerCallbacks(pagesList);
+                return true;
+            }
         }
     } catch (err) {
         console.warn("Không thể tự động tải menu_data.json từ máy chủ (đang chạy offline):", err);
