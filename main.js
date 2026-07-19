@@ -187,9 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             showCover: false,      // Sử dụng trang đôi liên tục.
             usePortrait: false,    // Ép hiển thị trang đôi kể cả trên mobile ngang.
+            useMouseEvents: false, // Tắt hoàn toàn việc kéo lật trang bằng chuột/tay để giữ nguyên kích thước phẳng phiu
             
             flippingTime: 300,     // Hoạt ảnh lật trang siêu tốc (300ms) cực kỳ nhạy và nhanh
-            swipeDistance: 15,     // Giảm khoảng cách vuốt tối thiểu để lật trang nhanh hơn trên mobile
+            swipeDistance: 5000,   // Đặt khoảng cách vuốt cực lớn để tắt kéo vuốt lật uốn cong gây to/lệch trang trên mobile
             maxShadowOpacity: 0.85, // Tăng mạnh độ đậm bóng đổ StPageFlip vẽ để tối ưu thị giác 3D (v3.4)
             showPageCorners: false, // TẮT hiệu ứng nhô mép góc trang khi rê chuột qua (v3.4)
             disableKeyPress: true
@@ -612,44 +613,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // 7. KHÓA HOÀN TOÀN CÁC THAO TÁC CUỘN & THU PHÓNG (PINCH TO ZOOM) BẰNG JS
     // ==========================================================================
-    // Ngăn chặn hoàn toàn hành vi cuộn và thu phóng mặc định của trình duyệt trên mobile
+    // Sử dụng capture: true để chặn sự kiện touch trước khi bị các thư viện con ngăn cản truyền lên
     document.addEventListener('touchmove', (event) => {
-        // Chỉ cho phép cuộn khi người dùng đang tương tác với modal hoặc phần tử HTML tùy biến
         const isScrollable = event.target.closest('.modal-content') || event.target.closest('.custom-html-element');
         if (!isScrollable) {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
         }
-    }, { passive: false });
+    }, { capture: true, passive: false });
 
-    // Ngăn chặn pinch-to-zoom (thu phóng hai ngón tay) trên toàn giao diện
+    // Ngăn chặn pinch-to-zoom (thu phóng hai ngón tay) trên toàn giao diện ở phase capture
     document.addEventListener('touchstart', (event) => {
         if (event.touches.length > 1) {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
         }
-    }, { passive: false });
+    }, { capture: true, passive: false });
 
     // Ngăn chặn double-tap (nhấp đúp màn hình) tự động thu phóng trên một số dòng mobile
     let lastTouchEnd = 0;
     document.addEventListener('touchend', (event) => {
         const now = (new Date()).getTime();
         if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
         }
         lastTouchEnd = now;
-    }, { passive: false });
+    }, { capture: true, passive: false });
 
     // Ngăn chặn dblclick (nhấp đúp chuột/tay) gây phóng to màn hình
     document.addEventListener('dblclick', (event) => {
-        event.preventDefault();
-    }, { passive: false });
+        if (event.cancelable) event.preventDefault();
+    }, { capture: true, passive: false });
 
     // Ngăn chặn cử chỉ zoom đặc thù trên iOS Safari
     document.addEventListener('gesturestart', (event) => {
-        event.preventDefault();
-    }, { passive: false });
+        if (event.cancelable) event.preventDefault();
+    }, { capture: true, passive: false });
 
     document.addEventListener('gesturechange', (event) => {
-        event.preventDefault();
-    }, { passive: false });
+        if (event.cancelable) event.preventDefault();
+    }, { capture: true, passive: false });
 
 });
